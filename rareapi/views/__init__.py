@@ -1,1 +1,1 @@
-from .user import UserView
+from .RareUserView import RareUserView
