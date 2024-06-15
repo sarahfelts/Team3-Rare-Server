@@ -1,9 +1,12 @@
-[FORMAT] 
-  good-names=i,j,ex,pk
+[FORMAT]
+good-names=i,j,ex,pk
 
 [MESSAGES CONTROL]
-  disable=broad-except,imported-auth-user,missing-class-docstring,no-self-use,abstract-method
+disable=broad-except,imported-auth-user,missing-class-docstring,no-self-use,abstract-method,no-member
 
 [MASTER]
-  disable=C0114,
+disable=C0114
 
+[TYPECHECK]
+ignored-modules=django
+ignored-classes=django.db.models.base.Model
