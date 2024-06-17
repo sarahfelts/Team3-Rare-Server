@@ -10,3 +10,5 @@ class RareUser(models.Model):
     active = models.BinaryField()
     is_staff = models.BooleanField(default=False)
     uid = models.TextField(max_length=55)
+    
+    objects = models.Manager()

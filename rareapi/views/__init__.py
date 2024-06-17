@@ -1,1 +1,2 @@
-from .user import UserView
+from .rare_user import UserView
+from .comment import CommentView
