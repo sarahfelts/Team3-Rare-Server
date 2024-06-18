@@ -9,4 +9,5 @@ class Post(models.Model):
     publication_date = models.DateField()
     image_url = models.CharField(max_length=200)
     content = models.CharField(max_length=500)
+
     approved = models.BinaryField()

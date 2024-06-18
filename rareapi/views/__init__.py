@@ -1,2 +1,2 @@
-from .rare_user import UserView
 from .comment import CommentView
+from .RareUserView import RareUserView
