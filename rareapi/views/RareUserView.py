@@ -18,7 +18,7 @@ class RareUserView(ViewSet):
         """Handle GET requests for single user """
         try:
             user = RareUser.objects.get(pk=pk)
-            serializer = UserSerializer(user, many=False)
+            serializer = SingleUserSerializer(user, many=False)
             return Response(serializer.data)
         except RareUser.DoesNotExist:
             return Response({'message': 'User does not exist.'}, status=404)
@@ -60,3 +60,21 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = RareUser
         fields = ('id', 'first_name', 'last_name', 'bio', 'profile_image_url', 'email', 'created_on', 'active', 'is_staff', 'uid' )
+        
+class SingleUserSerializer(serializers.ModelSerializer):
+    """JSON serializer for a single user
+    """
+    full_name = serializers.SerializerMethodField()
+    user_profile_type = serializers.SerializerMethodField()
+
+    class Meta:
+        model = RareUser
+        fields = ('full_name', 'profile_image_url', 'email', 'created_on', 'user_profile_type')
+
+    def get_full_name(self, obj):
+        """Combine first_name and last_name into full_name"""
+        return f"{obj.first_name} {obj.last_name}"
+
+    def get_user_profile_type(self, obj):
+        """Return 'Staff' if is_staff is True, otherwise return 'User'"""
+        return 'Staff' if obj.is_staff else 'User'
