@@ -19,5 +19,5 @@ class CategoryView(ViewSet):
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ('label')
+        fields = ['label']
         depth = 1
