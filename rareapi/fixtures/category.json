@@ -1,0 +1,38 @@
+[
+    {
+      "model": "rareapi.category",
+      "pk": 1,
+      "fields": {
+        "label": "Action"
+      }
+    },
+    {
+      "model": "rareapi.category",
+      "pk": 2,
+      "fields": {
+        "label": "Adventure"
+      }
+    },
+    {
+      "model": "rareapi.category",
+      "pk": 3,
+      "fields": {
+        "label": "Role-Playing"
+      }
+    },
+    {
+      "model": "rareapi.category",
+      "pk": 4,
+      "fields": {
+        "label": "Strategy"
+      }
+    },
+    {
+      "model": "rareapi.category",
+      "pk": 5,
+      "fields": {
+        "label": "Simulation"
+      }
+    }
+  ]
+  

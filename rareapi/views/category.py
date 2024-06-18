@@ -1,9 +1,11 @@
-from rest_framework import Viewset, status, serializers
+from rest_framework import  status, serializers
 from rest_framework.response import Response
 from rareapi.models import Category
+from rest_framework.viewsets import ViewSet
 
 
-class CategoryView(Viewset):
+
+class CategoryView(ViewSet):
     
     def list(self,request):
         category = Category.objects.all()
