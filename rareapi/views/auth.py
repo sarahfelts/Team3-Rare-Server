@@ -12,6 +12,9 @@ def check_user(request):
     Method arguments:
       request -- The full HTTP request object
     '''
+    if 'uid' not in request.data:
+        return Response({'error': 'uid is a required field'}, status=400)
+
     uid = request.data['uid']
 
     # Use the built-in authenticate method to verify
