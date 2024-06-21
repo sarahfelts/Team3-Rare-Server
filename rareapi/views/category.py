@@ -15,6 +15,17 @@ class CategoryView(ViewSet):
          category = Category.objects.get(pk = pk)
          serializer = CategorySerializer(category)
          return Response(serializer.data, status=status.HTTP_200_OK)
+    def update(self,request,pk):
+        category = Category.objects.get(pk = pk)
+        category.label = request.data.get("label")
+        serializer = CategorySerializer(category, data=request.data)
+        if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_200_OK)
+    def destroy(self,request, pk):
+        category = Category.objects.get(pk = pk)
+        category.delete()
+        return Response(None, status=status.HTTP_204_NO_CONTENT)
         
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
