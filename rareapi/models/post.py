@@ -10,4 +10,4 @@ class Post(models.Model):
     image_url = models.CharField(max_length=200)
     content = models.CharField(max_length=500)
 
-    approved = models.BinaryField()
+    approved = models.BooleanField()
