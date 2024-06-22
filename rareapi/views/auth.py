@@ -1,3 +1,4 @@
+from django.db import IntegrityError
 from rest_framework.exceptions import AuthenticationFailed
 from rareapi.models import RareUser
 from rest_framework.decorators import api_view
@@ -78,3 +79,5 @@ def register_user(request):
     except KeyError:
         data = {'error': 'Required fields are missing'}
         return Response(data, status=400)
+    except IntegrityError:
+        return Response({'message': 'A user with this username already exists.'}, status=400)
