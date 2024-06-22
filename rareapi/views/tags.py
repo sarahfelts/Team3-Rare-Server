@@ -55,7 +55,7 @@ class TagView(ViewSet):
         """
         try:
             tag = Tag.objects.get(pk=pk)
-            tag.label = request.data.get("label")
+            tag.label = request.data.get["label"]
             serializer = TagSerializer(tag, data=request.data)
             if serializer.is_valid():
                 serializer.save()
