@@ -1,16 +1,16 @@
 [
   {
-    "model": "rareapi.rareuser",
-    "pk": 1,
+    "model": "rareapi.RareUser",
     "fields": {
       "first_name": "Jesse",
       "last_name": "Ramirez",
       "bio": "Jesse is a software engineer with a passion for building web applications. He is a graduate of Nashville Software School and has experience with JavaScript, React, Python, Django, and more. He is currently working as a software engineer at Rare.",
       "profile_image_url": "https://drive.google.com/file/d/1L1n8pfFlymNvxjrnWq8qazwKiNvU6ixG/view?usp=sharing",
       "email": "gedeon.ram.dev@gmail.com",
+      "username": "jesseram",
       "created_on": "2024-06-15",
       "active": true,
-      "is_staff": true,
+      "is_staff":true,
       "uid": "1"
     }
   }
