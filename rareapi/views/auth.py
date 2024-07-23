@@ -81,3 +81,5 @@ def register_user(request):
         return Response(data, status=400)
     except IntegrityError:
         return Response({'message': 'A user with this username already exists.'}, status=400)
+    
+    

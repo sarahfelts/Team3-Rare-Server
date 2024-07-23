@@ -1,4 +1,8 @@
 from django.http import HttpResponseServerError
+from rest_framework import viewsets
+from rest_framework.decorators import action
+from rest_framework.response import Response
+from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
@@ -6,9 +10,41 @@ from rest_framework import serializers, status
 from rest_framework.exceptions import NotFound, ValidationError
 from rareapi.models import RareUser
 
-class RareUserView(ViewSet):
-    """Rare API user view"""
+class UserSerializer(serializers.ModelSerializer):
+    """JSON serializer for gamers
+    """
+    class Meta:
+        model = RareUser
+        fields = ('id', 'first_name', 'last_name', 'bio', 'profile_image_url', 'email', 'created_on', 'active', 'is_staff', 'uid', 'username')
+       
+class SingleUserSerializer(serializers.ModelSerializer):
+    """JSON serializer for a single user
+    """
+    full_name = serializers.SerializerMethodField()
+    user_profile_type = serializers.SerializerMethodField()
+    display_name = serializers.SerializerMethodField()
+
+    class Meta:
+        model = RareUser
+        fields = ('full_name', 'profile_image_url', 'email', 'created_on', 'user_profile_type', 'display_name', 'username')
+
+    def get_full_name(self, obj):
+        """Combine first_name and last_name into full_name"""
+        return f"{obj.first_name} {obj.last_name}"
     
+
+    def get_user_profile_type(self, obj):
+        """Return 'Staff' if is_staff is True, otherwise return 'User'"""
+        return 'Staff' if obj.is_staff else 'User'
+    
+    def get_display_name(self, obj):
+        """Get display name (username) for user"""
+        return f"{obj.username}"
+
+class RareUserView(viewsets.ModelViewSet):
+    """Rare API user view"""
+    queryset = RareUser.objects.all()
+    serializer_class = UserSerializer    
     def list(self, request):
         """Handle GET requests to get all users """
         queryset = RareUser.objects.all()
@@ -57,22 +93,19 @@ class RareUserView(ViewSet):
     
         return Response({}, status=status.HTTP_204_NO_CONTENT)
     
-    @action(detail=True, methods=['put'], url_path='update_active_user')
+    @action(detail=True, methods=['PUT'])
     def update_active_user(self, request, pk=None):
+        """
+        Custom action to update the 'active' status of a user.
+        """
         try:
-            user = RareUser.objects.get(pk=pk)
-        except RareUser.DoesNotExist:
-            raise NotFound('User not found')
-    
-        active = request.data.get('active')
-        if active is None:
-            raise ValidationError('Missing "active" field in request data')
-    
-        user.active = active
-        user.save()
-    
-        return Response({'status': 'active status updated'}, status=status.HTTP_200_OK)
-    
+            user = self.get_object()
+            user.active = request.data.get('active')
+            user.save()
+            return Response(status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        
     def destroy(self, request, pk):
         try:
             user = RareUser.objects.get(pk=pk)
@@ -81,34 +114,3 @@ class RareUserView(ViewSet):
         except RareUser.DoesNotExist:
             return Response({'message': 'User not found.'}, status=status.HTTP_404_NOT_FOUND)
     
-class UserSerializer(serializers.ModelSerializer):
-    """JSON serializer for gamers
-    """
-    class Meta:
-        model = RareUser
-        fields = ('id', 'first_name', 'last_name', 'bio', 'profile_image_url', 'email', 'created_on', 'active', 'is_staff', 'uid', 'username')
-
-        
-class SingleUserSerializer(serializers.ModelSerializer):
-    """JSON serializer for a single user
-    """
-    full_name = serializers.SerializerMethodField()
-    user_profile_type = serializers.SerializerMethodField()
-    display_name = serializers.SerializerMethodField()
-
-    class Meta:
-        model = RareUser
-        fields = ('full_name', 'profile_image_url', 'email', 'created_on', 'user_profile_type', 'display_name', 'username')
-
-    def get_full_name(self, obj):
-        """Combine first_name and last_name into full_name"""
-        return f"{obj.first_name} {obj.last_name}"
-    
-
-    def get_user_profile_type(self, obj):
-        """Return 'Staff' if is_staff is True, otherwise return 'User'"""
-        return 'Staff' if obj.is_staff else 'User'
-    
-    def get_display_name(self, obj):
-        """Get display name (username) for user"""
-        return f"{obj.username}"
