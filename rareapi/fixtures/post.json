@@ -1,26 +1,26 @@
 [
   {
     "model": "rareapi.post",
-    "pk": 1,
     "fields": {
       "rare_user": 1,
       "category": 1,
       "title": "Post One",
       "publication_date": "2024-12-12",
       "image_url": "test",
-      "content": "Love this post!"
+      "content": "Love this post!",
+      "approved": true
     }
   },
   {
     "model": "rareapi.post",
-    "pk": 2,
     "fields": {
       "rare_user": 1,
       "category": 2,
       "title": "Post Two",
       "publication_date": "2024-02-14",
       "image_url": "test",
-      "content": "I'm scared"
+      "content": "I'm scared",
+      "approved": false
     }
   }
 ]
